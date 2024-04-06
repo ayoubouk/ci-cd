@@ -1,18 +1,12 @@
-name: kubernetes Deployment
-
-on:
-  pull_request:
-    branches: [main]
 jobs:
   deploy:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Setup kubeconfig
-      run : |
-        echo "${{secrets.KUBECONFIG}}" | base64 --decode > kubeconfig
-    - name: Apply kubernets configurations
-      run: |
-        export KUBECONFIG=kubeconfig
-        kubectl apply -n saas-health -f k8s
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Alpine container
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
+          export KUBECONFIG=kubeconfig
+          kubectl run alpine-deployment --image=alpine:latest --restart=Always --namespace=saas-health
