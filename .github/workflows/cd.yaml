@@ -15,4 +15,4 @@ jobs:
     - name: Apply kubernets configurations
       run: |
         export KUBECONFIG=kubeconfig
-        kubectl apply -n saas-health -f k8s/
+        kubectl apply -n saas-health -f k8s
