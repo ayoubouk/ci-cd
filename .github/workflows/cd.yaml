@@ -14,11 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: create kubeconfig
-        run : |
-          mkdir ${HOME}/.kube
-          echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/.kube/config
-          cat ${HOME}/.kube/config 
       - name: Set up Kubectl
         uses: azure/k8s-set-context@v1
         with:
