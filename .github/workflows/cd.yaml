@@ -4,9 +4,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Deploy Alpine container
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
-          export KUBECONFIG=kubeconfig
-          kubectl run alpine-deployment --image=alpine:latest --restart=Always --namespace=saas-health
+      - name: create kubeconfig
+        run : |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBECONFIG }} | base64 --decode > ${HOME}/.kube/config
+          cat ${HOME}/.kube/config 
+      - name: use context
+        run: kubectl config use-context octobay-api
+      - name: deploy to k8s
+        run : kubectl apply -f k8s/
